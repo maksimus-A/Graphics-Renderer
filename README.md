@@ -8,3 +8,5 @@ I plan to expand this project greatly. Currently, it only renders a simple trian
 
 I used Visual Studio to create and build the project. Currently unsure how to allow others to build and run this project; I believe
 using CMake is the simplest solution that I will look into soon.
+
+![Image of Triangle Render](OpenGLSetup/images/triangle_image.png)
