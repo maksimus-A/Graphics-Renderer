@@ -49,7 +49,7 @@ int main(void)
         "#version 330 core\n"
         "out vec4 fragColor;\n"
         "void main() {\n"
-        "   fragColor = vec4(0.0f, 0.0f, 1.0f, 1.0f);\n" // RGBA values
+        "   fragColor = vec4(0.8f, 0.2667f, 0.0863f, 1.0f);\n" // RGBA values, (blueish) (0.1255f, 0.3961f, 0.4314f)
         "}\0";
 
     // The actual vertex shader that is being created.
