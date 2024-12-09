@@ -1,9 +1,13 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+
+std::string ReadTextFile(const std::string& fileName);
 
 int main(void)
 {
@@ -37,20 +41,17 @@ int main(void)
         return -1;
     }
 
-    /* The source code for the vertex shader. */
-    const char* vertexShaderSrc = 
-        "#version 330 core\n"
-        "layout (location = 0) in vec3 aPos;\n"
-        "void main() {\n"
-        "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0f);\n"
-        "}\0";
 
-    const char* fragmentShaderSrc = 
-        "#version 330 core\n"
-        "out vec4 fragColor;\n"
-        "void main() {\n"
-        "   fragColor = vec4(0.8f, 0.2667f, 0.0863f, 1.0f);\n" // RGBA values, (blueish) (0.1255f, 0.3961f, 0.4314f)
-        "}\0";
+    /* The source code for the vertex shader. */
+    std::string vertexShaderCode = ReadTextFile("shaders/vertex.glsl");
+
+    std::string fragmentShaderCode = ReadTextFile("shaders/fragment.glsl");
+
+    const char* vertexShaderSrc = vertexShaderCode.c_str();
+
+    const char* fragmentShaderSrc = fragmentShaderCode.c_str();
+
+
 
     // The actual vertex shader that is being created.
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -171,4 +172,20 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     /* Set the new viewport for openGL rendering */
     glViewport(0, 0, width, height);
+}
+
+std::string ReadTextFile(const std::string& fileName) 
+{
+    std::ifstream file(fileName);
+    if (!file.is_open())
+    {
+        std::cout << "File failed to open." << std::endl;
+        return "";
+    }
+
+    std::stringstream ss;
+    ss << file.rdbuf();
+    file.close();
+
+    return ss.str();
 }

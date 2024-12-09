@@ -38,6 +38,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <None Include="shaders\vertex.glsl" />
+    <None Include="shaders\fragment.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\triangle_image.png">
