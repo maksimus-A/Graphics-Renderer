@@ -107,22 +107,40 @@ int main(void)
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    // Define our vertices of the tringle
+    // Define our vertices of the rectangle
+    /*
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, // 1st
-         0.0f,  0.5f, 0.0f, // 2nd
-         0.5f, -0.5f, 0.0f, // 3rd
+    -0.5f, -0.5f, 0.0f, // bottom left
+    -0.5f,  0.5f, 0.0f, // top left
+     0.5f, -0.5f, 0.0f, // bottom right
+     0.5f,  0.5f, 0.0f  // top right
+    };*/
+    float vertices[] = {
+        -1.0f, -1.0f, 0.0f, // bottom left
+        -1.0f,  1.0f, 0.0f, // top left
+         1.0f, -1.0f, 0.0f, // bottom right
+         1.0f,  1.0f, 0.0f  // top right
     };
 
-    unsigned int VAO, VBO; // vertex array object, vertex buffer object
+    unsigned int indices[] = {
+        1, 0, 2, // first triangle
+        1, 2, 3  // second triangle
+    };
+
+    unsigned int VAO, VBO, EBO; // vertex array object, vertex buffer object, element buffer object
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO); // 1 buffer object, and the reference
+    glGenBuffers(1, &EBO); // 1 buffer + element object
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // data is set once, but used many times
+    // We tell openGL which indices to draw in which order for each triangle.
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); // for drawing a rectangle
     // other examples: gl_stream_draw, gl_dynamic_draw (data is changed a lot, and used a lot)
+
     // Specifies how to interpret vertices in our array
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
     glEnableVertexAttribArray(0); // is false by default, enable it (0 is the index?)
@@ -134,7 +152,7 @@ int main(void)
 
     /* Simple pipeline to convert integer RBG values into floats for openGL rendering.*/
     int intRGB[3] = {
-        235, 195, 52
+        25, 25, 25
     };
     int RGBmax = 255;
     float fRGB[3];
@@ -162,7 +180,7 @@ int main(void)
         // Pass the time variable to the fragment shader
         glUniform1f(timeLoc, timeValue);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
