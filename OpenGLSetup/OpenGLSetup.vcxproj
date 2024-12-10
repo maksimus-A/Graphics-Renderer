@@ -163,12 +163,13 @@
     <ClInclude Include="dependencies\include\GLFW\glfw3native.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
     <None Include="shaders\fragment.glsl" />
     <None Include="shaders\vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="images\shader_render.gif" />
     <Image Include="images\triangle_image.png" />
+    <Image Include="images\triangle_render.gif" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

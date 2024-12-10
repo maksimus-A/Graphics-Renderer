@@ -10,4 +10,5 @@ uses a fragment shader to show some cool art effects done using only glsl.
 I used Visual Studio to create and build the project. Currently unsure how to allow others to build and run this project; I believe
 using CMake is the simplest solution that I will look into soon.
 
-![Image of Triangle Render](OpenGLSetup/images/my_shader_render.gif)
+![Image of Shader Render](OpenGLSetup/images/my_shader_render_3.gif)
+![Image of Shader Render 2](OpenGLSetup/images/my_shader_render.gif)
