@@ -116,15 +116,27 @@ int main(void)
      0.5f,  0.5f, 0.0f  // top right
     };*/
     float vertices[] = {
+        // First rectangle
         -1.0f, -1.0f, 0.0f, // bottom left
         -1.0f,  1.0f, 0.0f, // top left
+        -0.0f, -1.0f, 0.0f, // bottom right
+        -0.0f,  1.0f, 0.0f, // top right
+
+        // Second rectangle
+         0.0f, -1.0f, 0.0f, // bottom left
+         0.0f,  1.0f, 0.0f, // top left
          1.0f, -1.0f, 0.0f, // bottom right
          1.0f,  1.0f, 0.0f  // top right
     };
 
     unsigned int indices[] = {
-        1, 0, 2, // first triangle
-        1, 2, 3  // second triangle
+        // First rectangle
+        1, 0, 2, // 1st triangle, etc
+        1, 2, 3,
+
+        // Second rectangle
+        5, 4, 6,
+        5, 6, 7
     };
 
     unsigned int VAO, VBO, EBO; // vertex array object, vertex buffer object, element buffer object
@@ -160,6 +172,13 @@ int main(void)
         fRGB[i] = (float) intRGB[i] / RGBmax;
         // std::cout << "float i: " << fRGB[i] << std::endl;
     }
+
+    // Create transformation matrices for each rectangle
+    //glm::mat4 model1 = glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, 0.0f, 0.0f));
+    //glm::mat4 model2 = glm::translate(glm::mat4(1.0f), glm::vec3(0.5f, 0.0f, 0.0f));
+
+    // Get uniform location
+    //GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
     
 
     /* Loop until the user closes the window */
@@ -180,7 +199,7 @@ int main(void)
         // Pass the time variable to the fragment shader
         glUniform1f(timeLoc, timeValue);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

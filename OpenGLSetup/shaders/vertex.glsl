@@ -7,6 +7,7 @@ layout(location = 0) in vec3 aPos;
 out vec2 fragCoord;
 
 uniform vec2 iResolution; // Resolution of the viewport
+//uniform mat4 model; // Using matrix for transformations of rectangles
 
 void main() {
     // Pass the normalized device coordinates to the fragment shader
