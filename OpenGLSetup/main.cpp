@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <ctime>
+#include <chrono>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -31,8 +33,12 @@ int main(void)
     }
 
     /* Make the window's context current */
+    int window_size[2];
+
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    /* Get the width and height to pass into glfl*/
+    glfwGetFramebufferSize(window, &window_size[0], &window_size[1]);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -82,12 +88,20 @@ int main(void)
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
+    glUseProgram(shaderProgram); // NEW LINE ADDED?!?
+
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if (!success)
     {
         glGetProgramInfoLog(shaderProgram, 512, 0, infoLog);
         std::cout << "Failed to link the shader program. ERR: " << infoLog << std::endl;
     }
+
+    // Set the resolution uniform
+    int resolutionLoc = glGetUniformLocation(shaderProgram, "iResolution");
+    auto startTime = std::chrono::system_clock::now();
+    int timeLoc = glGetUniformLocation(shaderProgram, "iTime");
+    glUniform2f(resolutionLoc, window_size[0], window_size[1]);
 
     // We can delete these because they are now inside of shaderProgram, so to free resources we delete.
     glDeleteShader(vertexShader);
@@ -133,6 +147,11 @@ int main(void)
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        // Calculate elapsed time in seconds
+        auto currentTime = std::chrono::system_clock::now();
+        std::chrono::duration<float> elapsed = currentTime - startTime;
+        float timeValue = elapsed.count();
+
         processInput(window);
 
         /* Render here */
@@ -140,6 +159,8 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
+        // Pass the time variable to the fragment shader
+        glUniform1f(timeLoc, timeValue);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -170,6 +191,8 @@ void processInput(GLFWwindow* window)
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
+    /*Going to modify this to return the width/height for rendering in glsl*/
+
     /* Set the new viewport for openGL rendering */
     glViewport(0, 0, width, height);
 }

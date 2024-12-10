@@ -1,8 +1,17 @@
 #version 330 core
 
-layout (location = 0) in vec3 aPos;
+// Input vertex position from OpenGL application
+layout(location = 0) in vec3 aPos;
 
+// Output UV coordinates to the fragment shader
+out vec2 fragCoord;
+
+uniform vec2 iResolution; // Resolution of the viewport
 
 void main() {
-   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0f);
+    // Pass the normalized device coordinates to the fragment shader
+    fragCoord = (aPos.xy + 1.0) / 2.0 * iResolution;
+
+    // Transform the vertex position into clip space
+    gl_Position = vec4(aPos, 1.0);
 }
